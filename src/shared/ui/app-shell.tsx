@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Logout01Icon, Menu01Icon, Search01Icon, Settings01Icon, StarIcon, UserCircleIcon } from "@hugeicons-pro/core-stroke-rounded";
+import { ArrowLeft01Icon, Logout01Icon, Menu01Icon, Search01Icon, Settings01Icon, StarIcon, UserCircleIcon } from "@hugeicons-pro/core-stroke-rounded";
 import {
   ChartHistogramIcon,
   CreditCardIcon,
@@ -75,6 +75,8 @@ import {
 import { UpgradeDialog } from "@/features/billing/ui/upgrade-dialog";
 import { useFavoritesQuery, usePlanQuery, useToggleFavorite } from "@/features/dashboard/api/dashboard";
 import { PAGES, pageTitle } from "../config/nav";
+
+const SITE = "https://hogoshi.dev";
 
 const ICONS = {
   "/": { stroke: HomeStroke, fill: Home01Icon },
@@ -248,6 +250,18 @@ function SearchDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (op
   );
 }
 
+function SiteBack() {
+  return (
+    <a
+      href={SITE}
+      className="text-fg-muted hover:bg-bg-subtle hover:text-fg inline-flex h-[calc(var(--row-h)-0.25rem)] w-full cursor-pointer items-center gap-2 overflow-hidden rounded-[var(--radius-sm)] px-3 text-sm whitespace-nowrap outline-none focus-visible:ring-2 focus-visible:ring-ring"
+    >
+      <Icon icon={ArrowLeft01Icon} variant="stroke" size={16} className="shrink-0" />
+      <span className={sidebarLabel}>Back</span>
+    </a>
+  );
+}
+
 function AccountMenu() {
   const { collapsed } = useSidebar();
   const router = useRouter();
@@ -302,14 +316,14 @@ function ShellSidebar({ onSearch }: { onSearch: () => void }) {
   return (
     <Sidebar>
       <SidebarHeader className="group/header relative overflow-hidden px-2">
-        <Link
-          href="/"
-          aria-label="Home"
+        <a
+          href={SITE}
+          aria-label="hogoshi"
           className={`flex min-w-0 items-center gap-2 rounded-[var(--radius-sm)] px-1 whitespace-nowrap outline-none focus-visible:ring-2 focus-visible:ring-ring ${collapsed ? "group-hover/header:pointer-events-none group-hover/header:opacity-0 [@media(hover:none)]:pointer-events-none [@media(hover:none)]:opacity-0" : ""}`}
         >
           <Logo size="sm" className="shrink-0" />
           <span className={`text-sm font-semibold tracking-tight ${sidebarLabel} ${collapsed ? "opacity-0" : ""}`}>hogoshi</span>
-        </Link>
+        </a>
         <SidebarTrigger
           className={
             collapsed
@@ -349,9 +363,9 @@ function Topbar({ onSearch }: { onSearch: () => void }) {
   return (
     <header className="pointer-events-none sticky top-0 z-[var(--z-sticky)] -mb-14 h-14 border-0 bg-transparent shadow-none backdrop-blur-none">
       <div className="pointer-events-auto relative flex h-14 items-center gap-2 bg-transparent px-3 pt-[var(--safe-top)]">
-        <Link href="/" aria-label="Home" className="shrink-0 rounded-[var(--radius-sm)] outline-none focus-visible:ring-2 focus-visible:ring-ring md:hidden">
+        <a href={SITE} aria-label="hogoshi" className="shrink-0 rounded-[var(--radius-sm)] outline-none focus-visible:ring-2 focus-visible:ring-ring md:hidden">
           <Logo size="sm" />
-        </Link>
+        </a>
         <p className="pointer-events-none absolute top-1/2 left-1/2 max-w-[70%] -translate-x-1/2 -translate-y-1/2">
           <span
             aria-hidden
@@ -407,16 +421,21 @@ function MobileBar() {
       </BottomBar>
       <Sheet side="left" open={menu} onOpenChange={setMenu}>
         <SheetContent className="px-2">
-          <SheetTitle className="flex items-center gap-2 px-3 pt-1 text-sm font-semibold">
-            <Logo size="sm" />
-            hogoshi
+          <SheetTitle className="px-3 pt-1 text-sm font-semibold">
+            <a href={SITE} aria-label="hogoshi" className="flex items-center gap-2 rounded-[var(--radius-sm)] outline-none focus-visible:ring-2 focus-visible:ring-ring">
+              <Logo size="sm" />
+              hogoshi
+            </a>
           </SheetTitle>
           <SidebarProvider>
-            <SidebarNav className="px-0">
-              <NavGroups />
-            </SidebarNav>
-            <div className="px-2 pb-2">
-              <PlanCard />
+            <div className="flex min-h-0 flex-1 flex-col">
+              <SidebarNav className="px-0">
+                <NavGroups />
+              </SidebarNav>
+              <div className="flex shrink-0 flex-col gap-1 pt-2">
+                <SiteBack />
+                <AccountMenu />
+              </div>
             </div>
           </SidebarProvider>
         </SheetContent>
