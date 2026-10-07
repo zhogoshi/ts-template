@@ -33,4 +33,4 @@ pnpm create hogoshi my-app
 PORT=3010 docker compose up --build
 ```
 
-`PORT` is the host port. The app inside the container still listens on `3000`. After `next build`, the image runs `obfuscate-hogoshi .next`. Local `pnpm dev` stays readable. Set `HUGEICONS_NPM_TOKEN` before the image build. In Dokploy, point the domain at container port `3000`.
+The process binds `PORT`. When it is unset, it listens on `3000`. Compose publishes that same port. After `next build`, the image runs `obfuscate-hogoshi .next`. Local `pnpm dev` stays readable. Set `HUGEICONS_NPM_TOKEN` before the image build. In Dokploy, set `PORT` and point the domain at that container port.
