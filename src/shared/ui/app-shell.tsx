@@ -433,8 +433,8 @@ function MobileBar() {
                 <NavGroups />
               </SidebarNav>
               <div className="flex shrink-0 flex-col gap-1 pt-2">
-                <SiteBack />
                 <AccountMenu />
+                <SiteBack />
               </div>
             </div>
           </SidebarProvider>
