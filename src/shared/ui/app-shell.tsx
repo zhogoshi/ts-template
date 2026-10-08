@@ -361,8 +361,8 @@ function Topbar({ onSearch }: { onSearch: () => void }) {
     document.title = `${title} · Hogoshi`;
   }, [title]);
   return (
-    <header className="pointer-events-none sticky top-0 z-[var(--z-sticky)] -mb-14 h-14 border-0 bg-transparent shadow-none backdrop-blur-none">
-      <div className="pointer-events-auto relative flex h-14 items-center gap-2 bg-transparent px-3 pt-[var(--safe-top)]">
+    <header className="pointer-events-none sticky top-0 z-[var(--z-sticky)] -mb-[calc(3.5rem+var(--safe-top))] h-[calc(3.5rem+var(--safe-top))] border-0 bg-transparent shadow-none backdrop-blur-none">
+      <div className="pointer-events-auto relative mt-[var(--safe-top)] flex h-14 items-center gap-2 bg-transparent px-3">
         <a href={SITE} aria-label="hogoshi" className="shrink-0 rounded-[var(--radius-sm)] outline-none focus-visible:ring-2 focus-visible:ring-ring md:hidden">
           <Logo size="sm" />
         </a>
@@ -399,7 +399,7 @@ function MobileBar() {
   const links = PAGES.filter((item) => item.group === "workspace").slice(0, 3);
   return (
     <>
-      <BottomBar>
+      <BottomBar className="right-[max(0.75rem,var(--safe-right))] bottom-[max(0.5rem,var(--safe-bottom))] left-[max(0.75rem,var(--safe-left))]">
         {links.map((item) => {
           const icons = ICONS[item.href];
           const active = pathname === item.href;
@@ -420,7 +420,7 @@ function MobileBar() {
         </BottomBarItem>
       </BottomBar>
       <Sheet side="left" open={menu} onOpenChange={setMenu}>
-        <SheetContent className="px-2">
+        <SheetContent className="top-[max(0.75rem,var(--safe-top))] right-auto bottom-[max(0.75rem,var(--safe-bottom))] left-[max(0.75rem,var(--safe-left))] px-2">
           <SheetTitle className="px-3 pt-1 text-sm font-semibold">
             <a href={SITE} aria-label="hogoshi" className="flex items-center gap-2 rounded-[var(--radius-sm)] outline-none focus-visible:ring-2 focus-visible:ring-ring">
               <Logo size="sm" />
@@ -448,12 +448,12 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const [search, setSearch] = useState(false);
   return (
     <SidebarProvider>
-      <div className="bg-bg flex h-dvh overflow-hidden">
+      <div className="bg-bg fixed inset-0 flex overflow-hidden">
         <ShellSidebar onSearch={() => setSearch(true)} />
-        <SidebarInset className="flex min-h-0 min-w-0 flex-1 flex-col">
-          <div className="min-h-0 flex-1 overflow-y-auto pb-[calc(6rem+var(--safe-bottom))] md:pb-0">
+        <SidebarInset className="flex min-h-0 min-w-0 flex-1 flex-col pr-[var(--safe-right)] pl-[var(--safe-left)] md:pl-0">
+          <div className="min-h-0 flex-1 touch-pan-y overflow-y-scroll overscroll-y-contain pb-[calc(4.5rem+max(0.5rem,var(--safe-bottom)))] md:pb-0">
             <Topbar onSearch={() => setSearch(true)} />
-            <div className="pt-14">{children}</div>
+            <div className="pt-[calc(3.5rem+var(--safe-top))]">{children}</div>
           </div>
         </SidebarInset>
       </div>
