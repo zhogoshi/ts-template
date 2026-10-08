@@ -357,13 +357,27 @@ function Topbar({ onSearch }: { onSearch: () => void }) {
   const favorites = useFavoritesQuery();
   const toggle = useToggleFavorite();
   const saved = favorites.data?.some((item) => item.href === pathname) ?? false;
+  const [compact, setCompact] = useState(false);
   useEffect(() => {
     document.title = `${title} · Hogoshi`;
   }, [title]);
+  useEffect(() => {
+    const root = document.querySelector("[data-scroll-root]");
+    const read = () => setCompact((root instanceof HTMLElement ? root.scrollTop : window.scrollY) > 24);
+    read();
+    const target: EventTarget = root instanceof HTMLElement ? root : window;
+    target.addEventListener("scroll", read, { passive: true });
+    return () => target.removeEventListener("scroll", read);
+  }, []);
   return (
-    <header className="pointer-events-none absolute inset-x-0 top-0 z-[var(--z-sticky)]">
-      <div className="bg-bg h-[calc(var(--safe-top)+0.625rem)]" />
-      <div className="pointer-events-auto relative flex h-14 items-center gap-2 bg-transparent px-3">
+    <header className="pointer-events-none absolute inset-x-0 top-0 z-[var(--z-sticky)] flex justify-center">
+      <div
+        className={`pointer-events-auto flex items-center gap-2 transition-[width,height,margin,border-radius,background-color,border-color,box-shadow] duration-500 ease-[var(--motion-ease)] motion-reduce:transition-none ${
+          compact
+            ? "border-border bg-bg-elevated mt-[calc(var(--safe-top)+0.75rem)] h-12 w-[min(40rem,calc(100%-1.5rem))] rounded-full border px-2 shadow-[var(--shadow-md)]"
+            : "mt-[calc(var(--safe-top)+0.5rem)] h-14 w-full border border-transparent bg-transparent px-3"
+        }`}
+      >
         <a href={SITE} aria-label="hogoshi" className="shrink-0 rounded-[var(--radius-sm)] outline-none focus-visible:ring-2 focus-visible:ring-ring md:hidden">
           <Logo size="sm" />
         </a>
@@ -451,9 +465,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     <SidebarProvider>
       <div className="bg-bg fixed inset-0 flex overflow-hidden">
         <ShellSidebar onSearch={() => setSearch(true)} />
-        <SidebarInset className="relative flex min-h-0 min-w-0 flex-1 flex-col pr-[var(--safe-right)] pl-[var(--safe-left)] md:pl-0">
+        <SidebarInset className="relative flex min-h-0 min-w-0 flex-1 flex-col">
           <Topbar onSearch={() => setSearch(true)} />
-          <div className="min-h-0 flex-1 touch-pan-y overflow-y-scroll overscroll-y-contain pt-[calc(3.5rem+var(--safe-top)+0.625rem)] pb-20 md:pb-0">
+          <div data-scroll-root className="min-h-0 flex-1 touch-pan-y overflow-x-hidden overflow-y-scroll overscroll-y-contain pt-[calc(3.5rem+var(--safe-top)+0.5rem)] pb-16 md:pb-0">
             {children}
           </div>
         </SidebarInset>
