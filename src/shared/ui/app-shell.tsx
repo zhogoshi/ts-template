@@ -314,7 +314,7 @@ function AccountMenu() {
 function ShellSidebar({ onSearch }: { onSearch: () => void }) {
   const { collapsed } = useSidebar();
   return (
-    <Sidebar>
+    <Sidebar className="pt-[calc(var(--safe-top)+0.5rem)] pb-2">
       <SidebarHeader className="group/header relative overflow-hidden px-2">
         <a
           href={SITE}
@@ -361,8 +361,9 @@ function Topbar({ onSearch }: { onSearch: () => void }) {
     document.title = `${title} · Hogoshi`;
   }, [title]);
   return (
-    <header className="pointer-events-none sticky top-0 z-[var(--z-sticky)] -mb-[calc(3.5rem+var(--safe-top))] h-[calc(3.5rem+var(--safe-top))] border-0 bg-transparent shadow-none backdrop-blur-none">
-      <div className="pointer-events-auto relative mt-[var(--safe-top)] flex h-14 items-center gap-2 bg-transparent px-3">
+    <header className="pointer-events-none absolute inset-x-0 top-0 z-[var(--z-sticky)]">
+      <div className="bg-bg h-[calc(var(--safe-top)+0.625rem)]" />
+      <div className="pointer-events-auto relative flex h-14 items-center gap-2 bg-transparent px-3">
         <a href={SITE} aria-label="hogoshi" className="shrink-0 rounded-[var(--radius-sm)] outline-none focus-visible:ring-2 focus-visible:ring-ring md:hidden">
           <Logo size="sm" />
         </a>
@@ -399,7 +400,7 @@ function MobileBar() {
   const links = PAGES.filter((item) => item.group === "workspace").slice(0, 3);
   return (
     <>
-      <BottomBar className="right-[max(0.75rem,var(--safe-right))] bottom-[max(0.5rem,var(--safe-bottom))] left-[max(0.75rem,var(--safe-left))]">
+      <BottomBar className="right-[max(0.75rem,var(--safe-right))] bottom-2 left-[max(0.75rem,var(--safe-left))]">
         {links.map((item) => {
           const icons = ICONS[item.href];
           const active = pathname === item.href;
@@ -420,7 +421,7 @@ function MobileBar() {
         </BottomBarItem>
       </BottomBar>
       <Sheet side="left" open={menu} onOpenChange={setMenu}>
-        <SheetContent className="top-[max(0.75rem,var(--safe-top))] right-auto bottom-[max(0.75rem,var(--safe-bottom))] left-[max(0.75rem,var(--safe-left))] px-2">
+        <SheetContent className="top-[calc(var(--safe-top)+0.75rem)] right-auto bottom-2 left-[max(0.75rem,var(--safe-left))] px-2">
           <SheetTitle className="px-3 pt-1 text-sm font-semibold">
             <a href={SITE} aria-label="hogoshi" className="flex items-center gap-2 rounded-[var(--radius-sm)] outline-none focus-visible:ring-2 focus-visible:ring-ring">
               <Logo size="sm" />
@@ -450,10 +451,10 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     <SidebarProvider>
       <div className="bg-bg fixed inset-0 flex overflow-hidden">
         <ShellSidebar onSearch={() => setSearch(true)} />
-        <SidebarInset className="flex min-h-0 min-w-0 flex-1 flex-col pr-[var(--safe-right)] pl-[var(--safe-left)] md:pl-0">
-          <div className="min-h-0 flex-1 touch-pan-y overflow-y-scroll overscroll-y-contain pb-[calc(4.5rem+max(0.5rem,var(--safe-bottom)))] md:pb-0">
-            <Topbar onSearch={() => setSearch(true)} />
-            <div className="pt-[calc(3.5rem+var(--safe-top))]">{children}</div>
+        <SidebarInset className="relative flex min-h-0 min-w-0 flex-1 flex-col pr-[var(--safe-right)] pl-[var(--safe-left)] md:pl-0">
+          <Topbar onSearch={() => setSearch(true)} />
+          <div className="min-h-0 flex-1 touch-pan-y overflow-y-scroll overscroll-y-contain pt-[calc(3.5rem+var(--safe-top)+0.625rem)] pb-20 md:pb-0">
+            {children}
           </div>
         </SidebarInset>
       </div>
