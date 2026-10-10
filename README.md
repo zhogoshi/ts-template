@@ -33,4 +33,6 @@ pnpm create hogoshi my-app
 PORT=3010 docker compose up --build
 ```
 
-The process binds `PORT`. When it is unset, it listens on `3000`. Compose publishes that same port. After `next build`, the image runs `obfuscate-hogoshi .next`. Local `pnpm dev` stays readable. Set `HUGEICONS_NPM_TOKEN` before the image build. In Dokploy, set `PORT` and point the domain at that container port.
+The process binds `PORT`. When it is unset, it listens on `3000`. Compose publishes that same port. After `next build`, the image runs `obfuscate-hogoshi .next`. Local `pnpm dev` stays readable. Set `HUGEICONS_NPM_TOKEN` before the image build. In Dokploy, set `PORT` and point the domain at that container port. A push to `main` redeploys this app. From the navigator, `node scripts/deploy.mjs template` does the same POST.
+
+The shell is a PWA: `src/app/manifest.ts`, icons, `viewport-fit=cover`, and the kit safe areas. The home indicator and the landscape insets stay clear of the bars.
