@@ -3,7 +3,6 @@
 import { Badge, Card, CardDescription, CardHeader, CardTitle } from "@hogoshi/ui";
 
 const PROJECTS = [
-  { name: "Cupify", status: "Live", note: "Trading bot" },
   { name: "Storybook", status: "Live", note: "Component playground" },
   { name: "Obfuscator", status: "Draft", note: "Build transform" },
 ];
