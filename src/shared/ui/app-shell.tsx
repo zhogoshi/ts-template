@@ -8,6 +8,7 @@ import {
   ChartHistogramIcon,
   CreditCardIcon,
   Folder01Icon,
+  GithubIcon,
   Home01Icon,
   Menu01Icon as Menu01FillIcon,
   StarIcon as StarFillIcon,
@@ -385,6 +386,15 @@ function Topbar({ onSearch }: { onSearch: () => void }) {
           onClick={() => toggle.mutate({ href: pathname, label: title })}
         >
           <Icon icon={saved ? StarFillIcon : StarIcon} variant={saved ? "fill" : "stroke"} size={16} />
+        </Button>
+        <Button
+          variant="secondary"
+          size="icon"
+          aria-label="GitHub"
+          className={cnGlass("rounded-full")}
+          render={<a href="https://github.com/zhogoshi/ts-template" target="_blank" rel="noreferrer" />}
+        >
+          <Icon icon={GithubIcon} size={16} />
         </Button>
         <ThemeToggle className={cnGlass("ml-auto rounded-full")} />
     </TopBar>
