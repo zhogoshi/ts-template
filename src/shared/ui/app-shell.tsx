@@ -23,6 +23,7 @@ import {
   UserGroupIcon as GroupStroke,
 } from "@hugeicons-pro/core-stroke-rounded";
 import {
+  AppShell as Shell,
   Avatar,
   AvatarFallback,
   BottomBar,
@@ -47,29 +48,24 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
   Icon,
-  Kbd,
-  Logo,
   Progress,
-  TopBar,
   Separator,
-  Sheet,
-  SheetContent,
-  SheetTitle,
+  ShellAction,
+  ShellBrand,
+  ShellLogo,
+  ShellMenu,
+  ShellSearch,
+  ShellTitle,
   Sidebar,
   SidebarFooter,
   SidebarGroup,
-  SidebarHeader,
-  SidebarInset,
   SidebarItem,
   SidebarLabel,
   SidebarNav,
-  SidebarProvider,
-  SidebarTrigger,
   Skeleton,
   ThemeToggle,
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
+  TopBar,
+  shellGlass,
   sidebarLabel,
   toast,
   useSidebar,
@@ -185,39 +181,6 @@ function PlanCard() {
   );
 }
 
-const glass = "border-border bg-bg-elevated/70 hover:bg-bg-elevated border backdrop-blur-xl";
-
-function SearchButton({ onOpen }: { onOpen: () => void }) {
-  const { collapsed } = useSidebar();
-  const fade = `${sidebarLabel} ${collapsed ? "opacity-0" : ""}`;
-  const button = (
-    <Button
-      variant="outline"
-      aria-label="Search"
-      className={cnGlass("w-full justify-between overflow-hidden px-3 font-normal whitespace-nowrap [&>span]:w-full [&>span>span]:w-full")}
-      onClick={onOpen}
-    >
-      <span className="flex w-full items-center justify-between gap-2">
-        <span className="flex min-w-0 items-center gap-2">
-          <Icon icon={Search01Icon} variant="stroke" size={16} className="shrink-0" />
-          <span className={fade}>Search</span>
-        </span>
-        <Kbd className={`shrink-0 ${fade}`}>⌘K</Kbd>
-      </span>
-    </Button>
-  );
-  return (
-    <Tooltip disabled={!collapsed}>
-      <TooltipTrigger render={button} />
-      <TooltipContent side="right">Search</TooltipContent>
-    </Tooltip>
-  );
-}
-
-function cnGlass(className: string) {
-  return `${glass} ${className}`;
-}
-
 function SearchDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (open: boolean) => void }) {
   const router = useRouter();
   const groups = [
@@ -254,13 +217,9 @@ function SearchDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (op
 
 function SiteBack() {
   return (
-    <a
-      href={SITE}
-      className="text-fg-muted hover:bg-bg-subtle hover:text-fg inline-flex h-[calc(var(--row-h)-0.25rem)] w-full cursor-pointer items-center gap-2 overflow-hidden rounded-[var(--radius-sm)] px-3 text-sm whitespace-nowrap outline-none focus-visible:ring-2 focus-visible:ring-ring"
-    >
-      <Icon icon={ArrowLeft01Icon} variant="stroke" size={16} className="shrink-0" />
-      <span className={sidebarLabel}>Back</span>
-    </a>
+    <SidebarItem icon={ArrowLeft01Icon} render={<a href={SITE} />}>
+      Back
+    </SidebarItem>
   );
 }
 
@@ -314,29 +273,10 @@ function AccountMenu() {
 }
 
 function ShellSidebar({ onSearch }: { onSearch: () => void }) {
-  const { collapsed } = useSidebar();
   return (
-    <Sidebar className="pt-[calc(var(--safe-top)+0.5rem)] pb-2">
-      <SidebarHeader className="group/header relative overflow-hidden px-2">
-        <a
-          href={SITE}
-          aria-label="hogoshi"
-          className={`flex min-w-0 items-center gap-2 rounded-[var(--radius-sm)] px-1 whitespace-nowrap outline-none focus-visible:ring-2 focus-visible:ring-ring ${collapsed ? "group-hover/header:pointer-events-none group-hover/header:opacity-0 [@media(hover:none)]:pointer-events-none [@media(hover:none)]:opacity-0" : ""}`}
-        >
-          <Logo size="sm" className="shrink-0" />
-          <span className={`text-sm font-semibold tracking-tight ${sidebarLabel} ${collapsed ? "opacity-0" : ""}`}>hogoshi</span>
-        </a>
-        <SidebarTrigger
-          className={
-            collapsed
-              ? "pointer-events-none absolute top-3 left-3 opacity-0 transition-opacity group-hover/header:pointer-events-auto group-hover/header:opacity-100 focus-visible:pointer-events-auto focus-visible:opacity-100 [@media(hover:none)]:pointer-events-auto [@media(hover:none)]:opacity-100"
-              : "shrink-0"
-          }
-        />
-      </SidebarHeader>
-      <div className="shrink-0 px-2 pb-2">
-        <SearchButton onOpen={onSearch} />
-      </div>
+    <Sidebar>
+      <ShellBrand href={SITE} label="hogoshi" />
+      <ShellSearch onOpen={onSearch} />
       <SidebarNav>
         <NavGroups />
         <div className="hidden px-1 pt-2 [@media(orientation:landscape)_and_(max-height:32rem)]:block">
@@ -364,39 +304,19 @@ function Topbar({ onSearch }: { onSearch: () => void }) {
   }, [title]);
   return (
     <TopBar contained>
-        <a href={SITE} aria-label="hogoshi" className="shrink-0 rounded-[var(--radius-sm)] outline-none focus-visible:ring-2 focus-visible:ring-ring md:hidden">
-          <Logo size="sm" />
-        </a>
-        <p className="pointer-events-none absolute top-1/2 left-1/2 max-w-[70%] -translate-x-1/2 -translate-y-1/2">
-          <span
-            aria-hidden
-            className="absolute top-1/2 left-1/2 -z-10 h-[2.4em] w-[260%] -translate-x-1/2 -translate-y-1/2 bg-[radial-gradient(ellipse_at_center,var(--bg)_0%,color-mix(in_oklch,var(--bg)_82%,transparent)_36%,transparent_70%)]"
-          />
-          <span className="relative block truncate text-sm font-semibold">{title}</span>
-        </p>
+        <ShellLogo href={SITE} label="hogoshi" className="md:hidden" />
+        <ShellTitle>{title}</ShellTitle>
         <span className="flex-1" />
-        <Button variant="secondary" size="icon" aria-label="Search" className={cnGlass("rounded-full")} onClick={onSearch}>
+        <ShellAction aria-label="Search" onClick={onSearch}>
           <Icon icon={Search01Icon} variant="stroke" size={16} />
-        </Button>
-        <Button
-          variant="secondary"
-          size="icon"
-          aria-label={saved ? "Remove favorite" : "Add favorite"}
-          className={cnGlass("rounded-full")}
-          onClick={() => toggle.mutate({ href: pathname, label: title })}
-        >
+        </ShellAction>
+        <ShellAction aria-label={saved ? "Remove favorite" : "Add favorite"} onClick={() => toggle.mutate({ href: pathname, label: title })}>
           <Icon icon={saved ? StarFillIcon : StarIcon} variant={saved ? "fill" : "stroke"} size={16} />
-        </Button>
-        <Button
-          variant="secondary"
-          size="icon"
-          aria-label="GitHub"
-          className={cnGlass("rounded-full")}
-          render={<a href="https://github.com/zhogoshi/ts-template" target="_blank" rel="noreferrer" />}
-        >
+        </ShellAction>
+        <ShellAction aria-label="GitHub" render={<a href="https://github.com/zhogoshi/ts-template" target="_blank" rel="noreferrer" />}>
           <Icon icon={GithubIcon} size={16} />
-        </Button>
-        <ThemeToggle className={cnGlass("ml-auto rounded-full")} />
+        </ShellAction>
+        <ThemeToggle className={`${shellGlass} ml-auto rounded-full`} />
     </TopBar>
   );
 }
@@ -408,7 +328,7 @@ function MobileBar() {
   const links = PAGES.filter((item) => item.group === "workspace").slice(0, 3);
   return (
     <>
-      <BottomBar className="right-[max(0.75rem,var(--safe-right))] bottom-2 left-[max(0.75rem,var(--safe-left))]">
+      <BottomBar>
         {links.map((item) => {
           const icons = ICONS[item.href];
           const active = pathname === item.href;
@@ -428,27 +348,23 @@ function MobileBar() {
           Menu
         </BottomBarItem>
       </BottomBar>
-      <Sheet side="left" open={menu} onOpenChange={setMenu}>
-        <SheetContent className="top-[calc(var(--safe-top)+0.75rem)] right-auto bottom-2 left-[max(0.75rem,var(--safe-left))] px-2">
-          <SheetTitle className="px-3 pt-1 text-sm font-semibold">
-            <a href={SITE} aria-label="hogoshi" className="flex items-center gap-2 rounded-[var(--radius-sm)] outline-none focus-visible:ring-2 focus-visible:ring-ring">
-              <Logo size="sm" />
-              hogoshi
-            </a>
-          </SheetTitle>
-          <SidebarProvider>
-            <div className="flex min-h-0 flex-1 flex-col">
-              <SidebarNav className="px-0">
-                <NavGroups />
-              </SidebarNav>
-              <div className="flex shrink-0 flex-col gap-1 pt-2">
-                <AccountMenu />
-                <SiteBack />
-              </div>
-            </div>
-          </SidebarProvider>
-        </SheetContent>
-      </Sheet>
+      <ShellMenu
+        open={menu}
+        onOpenChange={setMenu}
+        brand={
+          <ShellLogo href={SITE} label="hogoshi">
+            hogoshi
+          </ShellLogo>
+        }
+      >
+        <SidebarNav className="px-0">
+          <NavGroups />
+        </SidebarNav>
+        <div className="flex shrink-0 flex-col gap-1 pt-2">
+          <AccountMenu />
+          <SiteBack />
+        </div>
+      </ShellMenu>
     </>
   );
 }
@@ -456,18 +372,9 @@ function MobileBar() {
 export function AppShell({ children }: { children: React.ReactNode }) {
   const [search, setSearch] = useState(false);
   return (
-    <SidebarProvider>
-      <div className="bg-bg fixed inset-0 flex h-app overflow-hidden">
-        <ShellSidebar onSearch={() => setSearch(true)} />
-        <SidebarInset className="relative flex min-h-0 min-w-0 flex-1 flex-col">
-          <Topbar onSearch={() => setSearch(true)} />
-          <div data-scroll-root className="min-h-0 flex-1 touch-pan-y overflow-x-hidden overflow-y-scroll overscroll-y-contain pt-[var(--topbar-space)] pb-[var(--bottombar-space)] md:pb-[var(--safe-bottom)]">
-            {children}
-          </div>
-        </SidebarInset>
-      </div>
-      <MobileBar />
+    <Shell sidebar={<ShellSidebar onSearch={() => setSearch(true)} />} topBar={<Topbar onSearch={() => setSearch(true)} />} bottomBar={<MobileBar />}>
+      {children}
       <SearchDialog open={search} onOpenChange={setSearch} />
-    </SidebarProvider>
+    </Shell>
   );
 }
