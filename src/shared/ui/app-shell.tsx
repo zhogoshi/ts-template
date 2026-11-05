@@ -457,11 +457,11 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const [search, setSearch] = useState(false);
   return (
     <SidebarProvider>
-      <div className="bg-bg fixed inset-0 flex h-dvh min-h-dvh overflow-hidden">
+      <div className="bg-bg fixed inset-0 flex h-app overflow-hidden">
         <ShellSidebar onSearch={() => setSearch(true)} />
         <SidebarInset className="relative flex min-h-0 min-w-0 flex-1 flex-col">
           <Topbar onSearch={() => setSearch(true)} />
-          <div data-scroll-root className="min-h-0 flex-1 touch-pan-y overflow-x-hidden overflow-y-scroll overscroll-y-contain pt-[calc(3.5rem+var(--safe-top)+0.5rem)] pb-[calc(4rem+var(--safe-bottom))] md:pb-[var(--safe-bottom)]">
+          <div data-scroll-root className="min-h-0 flex-1 touch-pan-y overflow-x-hidden overflow-y-scroll overscroll-y-contain pt-[var(--topbar-space)] pb-[var(--bottombar-space)] md:pb-[var(--safe-bottom)]">
             {children}
           </div>
         </SidebarInset>
