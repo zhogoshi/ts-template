@@ -15,4 +15,4 @@ http://localhost:3000
 PORT=3010 docker compose up --build
 ```
 
-`PORT` defaults to `3000`. The image build needs `HUGEICONS_NPM_TOKEN`. Push to `main` redeploys. `node scripts/deploy.mjs template` does the same.
+`PORT` defaults to `3000`. The image build needs `HUGEICONS_NPM_TOKEN`.
